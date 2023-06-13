@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.vidaniello.objectpersistence.DiskPersistManager;
@@ -61,6 +62,23 @@ public class TestPersistence {
 		sp2.setSurname("Surname pojo child");
 		
 		return sp2;
+	}
+	
+	@Test
+	public void testDynamicPattern() {
+		try {			
+			String dynamicKey = "fasdf ${ds_ds} se we ${c2D_c$()} sas a${} sdfsdf${f}";
+			
+			Map<String,String> result = PersistenceReferenceFactory.workDynamicKey(dynamicKey);
+			
+			Assert.assertTrue(result.size()==3);
+			
+			result.forEach((key,value)->log.debug(key+": "+value));
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new AssertionError(e);
+		}
 	}
 	
 	@Test
