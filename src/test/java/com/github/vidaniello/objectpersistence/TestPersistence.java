@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.vidaniello.objectpersistence.DiskPersistManager;
+import com.github.vidaniello.objectpersistence.DiskPersistManagerDefault;
 import com.github.vidaniello.objectpersistence.PersistManager;
 import com.github.vidaniello.objectpersistence.PersistRepositoyPool;
 import com.github.vidaniello.objectpersistence.PersistentCollection;
@@ -44,8 +44,8 @@ public class TestPersistence {
 		// org.apache.logging.log4j.LogManager.getLogger();
 		
 		System.setProperty(
-				DiskPersistManager.datachangeinterceptor_diskpersistence_basepath_systemProperty, 
-				DiskPersistManager.defaultBasePath+File.separator+"test"
+				DiskPersistManagerDefault.diskpersistence_basepath_systemProperty, 
+				DiskPersistManagerDefault.defaultBasePath+File.separator+"test"
 			);
 	}
 	
