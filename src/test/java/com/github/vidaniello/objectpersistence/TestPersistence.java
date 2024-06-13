@@ -65,6 +65,38 @@ public class TestPersistence {
 	}
 	
 	@Test
+	public void test3() {
+		try {			
+			SimpleContainerObject sco = new SimpleContainerObject();
+			sco.setId("alfa");
+			
+			SimplePojo sp = null;
+			
+			/*
+			sp = sco.getDynamicId();
+			
+			sp = getSimplePojoMock();
+			
+			sco.setDynamicId(sp);
+			
+			sp = sco.getDynamicId();
+			*/
+			
+			sp = sco.getSimplePojo();
+			
+			sco.setSimplePojo(getSimplePojoMock());
+			
+			sp = sco.getSimplePojo();
+			
+			int i = 0;
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new AssertionError(e);
+		}
+	}
+	
+	@Test
 	public void testDynamicPattern() {
 		try {			
 			String dynamicKey = "fasdf ${ds_ds} se we ${c2D_c$()} sas a${} sdfsdf${f}";

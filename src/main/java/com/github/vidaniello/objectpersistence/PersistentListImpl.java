@@ -102,7 +102,7 @@ public class PersistentListImpl<E> extends PersistentCollectionAbstractImpl<E, L
 	
 	@Override
 	public ListIterator<E> listIterator() {
-		// TODO Auto-generated method stub
+		throwNotImplemented();
 		return null;
 	}
 

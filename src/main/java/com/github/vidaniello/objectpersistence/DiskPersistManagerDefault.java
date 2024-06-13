@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 public class DiskPersistManagerDefault<VALUE extends Serializable> extends PersistManagerAbstract</*String,*/ VALUE> {
 
-	public static final String defaultBasePath = System.getProperty("user.home")+File.separator+"object-persistence";
+	public static final String defaultBasePath = System.getProperty("user.home")+File.separator+AppConfig.getDefaultAppName();
 	public static final String diskpersistence_basepath_systemProperty = "objectpersistence.diskpersistence.basepath";
 	public static final String propertyName_repositoryPath = "repositoryPath";
 	

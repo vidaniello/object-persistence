@@ -391,7 +391,12 @@ public class PersistenceReferenceFactory {
 		if(PersistentObjectReference.class.isAssignableFrom(field.getType()))
 			throw new Exception("Call dynamic id from 'PersistentObjectReference' not yet implemented");
 				
-		return field.get(dynamicKeyInstance).toString();
+		Object fieldContent = field.get(dynamicKeyInstance);
+		
+		if(fieldContent==null)
+			throw new NullPointerException("the content of field '"+field.getName()+"' is null");
+		
+		return fieldContent.toString();
 	}
 	
 	private static String getContent(Method method, Object dynamicKeyInstance) throws Exception {
@@ -401,7 +406,12 @@ public class PersistenceReferenceFactory {
 		if(PersistentObjectReference.class.isAssignableFrom(method.getReturnType()))
 			throw new Exception("Call dynamic id from 'PersistentObjectReference' not yet implemented");
 				
-		return method.invoke(dynamicKeyInstance).toString();
+		Object methodReturn = method.invoke(dynamicKeyInstance);
+		
+		if(methodReturn==null)
+			throw new NullPointerException("the method '"+method.getName()+"()' returned null");
+		
+		return methodReturn.toString();
 	}
 	
 	
