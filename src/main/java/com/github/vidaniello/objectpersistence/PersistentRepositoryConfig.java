@@ -19,8 +19,11 @@ public @interface PersistentRepositoryConfig {
 	 */
 	String repoName() default "";
 	
+	String primaryKey() default "";
+	
 	Class<? extends PersistManager> repositoryClassImplementation() default InMemoryPersistManager.class;
 	
 	Property[] properties() default {};
 	SystemProperty[] systemProperties() default {};
+	
 }

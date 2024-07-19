@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
 import com.github.vidaniello.objectpersistence.DiskPersistManagerDefault;
 import com.github.vidaniello.objectpersistence.PersistenceReferenceFactory;
 import com.github.vidaniello.objectpersistence.PersistentCollection;
-import com.github.vidaniello.objectpersistence.PersistentEntity;
+//import com.github.vidaniello.objectpersistence.PersistentEntity;
 import com.github.vidaniello.objectpersistence.PersistentList;
 import com.github.vidaniello.objectpersistence.PersistentMap;
 import com.github.vidaniello.objectpersistence.PersistentObjectReference;
@@ -84,11 +84,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.SimplePojo",
+			primaryKey = "simplePojo",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}")
 			})
-	@PersistentEntity(primaryKey = "simplePojo")
+	//@PersistentEntity(primaryKey = "simplePojo")
 	private synchronized PersistentObjectReference</*String,*/ SimplePojo> getSimplePojoReference() throws Exception {
 		// simplePojo = new PersistentObjectReferenceImpl<>(SimpleContainerObject.class.getCanonicalName()+"."+SimplePojo.class.getCanonicalName(), getId()+".1");
 		if(simplePojo==null)
@@ -110,11 +111,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.LinkedList<String>",
+			primaryKey = "listOfStrings",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}")
 			})
-	@PersistentEntity(primaryKey = "listOfStrings")
+	//@PersistentEntity(primaryKey = "listOfStrings")
 	private synchronized PersistentObjectReference</*String,*/ Deque<String>> getListOfStringsReference() throws Exception {
 		if(listOfStrings==null)
 			listOfStrings = PersistenceReferenceFactory.getReference(this);
@@ -136,11 +138,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.LinkedList<List<SimplePojo>>",
+			primaryKey = "listOfListOfSimplePojo",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}")
 			})
-	@PersistentEntity(primaryKey = "listOfListOfSimplePojo")
+	//@PersistentEntity(primaryKey = "listOfListOfSimplePojo")
 	private synchronized PersistentObjectReference</*String,*/ Deque<List<SimplePojo>>> getListOfListOfSimplePojoReference() throws Exception {
 		if(listOfListOfSimplePojo==null)
 			listOfListOfSimplePojo = PersistenceReferenceFactory.getReference(this);
@@ -161,11 +164,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.Map<String,SimplePojo>",
+			primaryKey = "mapOfSimplePojo",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}")
 			})
-	@PersistentEntity(primaryKey = "mapOfSimplePojo")
+	//@PersistentEntity(primaryKey = "mapOfSimplePojo")
 	private synchronized PersistentObjectReference</*String,*/ Map<String,SimplePojo>> getMapOfSimplePojoReference() throws Exception {
 		if(mapOfSimplePojo==null)
 			mapOfSimplePojo = PersistenceReferenceFactory.getReference(this);
@@ -399,11 +403,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.collectionOfSimplePojos",
+			primaryKey = "collectionOfSimplePojos",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}/collectionOfSimplePojos")
 			})
-	@PersistentEntity(primaryKey = "collectionOfSimplePojos")
+	//@PersistentEntity(primaryKey = "collectionOfSimplePojos")
 	public synchronized PersistentCollection<SimplePojo> getCollectionOfSimplePojosRef() throws Exception{
 		if(collectionOfSimplePojos==null)
 			collectionOfSimplePojos = PersistenceReferenceFactory.getCollectionReference(this, new ArrayList<>());
@@ -414,11 +419,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.listOfSimplePojos",
+			primaryKey = "listOfSimplePojos",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}/listOfSimplePojos")
 			})
-	@PersistentEntity(primaryKey = "listOfSimplePojos")
+	//@PersistentEntity(primaryKey = "listOfSimplePojos")
 	public synchronized PersistentList<SimplePojo> getListOfSimplePojos() throws Exception{
 		if(listOfSimplePojos==null)
 			listOfSimplePojos = PersistenceReferenceFactory.getListReference(this, new ArrayList<>());
@@ -429,11 +435,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.setOfSimplePojos",
+			primaryKey = "setOfSimplePojos",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}/setOfSimplePojos")
 			})
-	@PersistentEntity(primaryKey = "setOfSimplePojos")
+	//@PersistentEntity(primaryKey = "setOfSimplePojos")
 	public synchronized PersistentSet<SimplePojo> getSetOfSimplePojos() throws Exception{
 		if(setOfSimplePojos==null)
 			setOfSimplePojos = PersistenceReferenceFactory.getSetReference(this, new HashSet<>());
@@ -444,11 +451,12 @@ public class SimpleContainerObject implements Serializable{
 	
 	@PersistentRepositoryConfig(
 			repoName = "SimpleContainerObject.${id}.mapOfSimplePojos",
+			primaryKey = "mapOfSimplePojos",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
 					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "SimpleContainerObject/${id}/mapOfSimplePojos")
 			})
-	@PersistentEntity(primaryKey = "mapOfSimplePojos")
+	//@PersistentEntity(primaryKey = "mapOfSimplePojos")
 	public synchronized PersistentMap<Integer, SimplePojo> getMapOfSimplePojos() throws Exception{
 		if(mapOfSimplePojos==null)
 			mapOfSimplePojos = PersistenceReferenceFactory.getMapReference(this, new HashMap<>());

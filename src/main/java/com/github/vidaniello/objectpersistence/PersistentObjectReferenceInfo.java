@@ -13,7 +13,8 @@ class PersistentObjectReferenceInfo implements Cloneable {
 	private boolean isValueTypeParametrized;
 	private String typeName;
 	private Type rawType;
-	private PersistentEntity persistentEntityAnnotation;
+	//private PersistentEntity persistentEntityAnnotation;
+	private String primaryKey;
 	private PersistentRepositoryConfig objectReferencePersistentRepositoryConfigAnnotation;
 	
 	private String calculatedRepoName;
@@ -87,12 +88,22 @@ class PersistentObjectReferenceInfo implements Cloneable {
 		this.typeName = typeName;
 	}
 
+	/*
 	PersistentEntity getPersistentEntityAnnotation() {
 		return persistentEntityAnnotation;
 	}
 
 	void setPersistentEntityAnnotation(PersistentEntity persistentEntityAnnotation) {
 		this.persistentEntityAnnotation = persistentEntityAnnotation;
+	}
+	*/
+	
+	public String getPrimaryKey() {
+		return primaryKey;
+	}
+	
+	public void setPrimaryKey(String primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 	
 	PersistentRepositoryConfig getValueClassPersistentRepositoryConfigAnnotation() {
@@ -185,7 +196,8 @@ class PersistentObjectReferenceInfo implements Cloneable {
 		ret.setCalculatedRepoName(calculatedRepoName);
 		ret.setInstanceForGenerateDynamicKey(getInstanceForGenerateDynamicKey());
 		ret.setObjectReferencePersistentRepositoryConfigAnnotation(getObjectReferencePersistentRepositoryConfigAnnotation());
-		ret.setPersistentEntityAnnotation(getPersistentEntityAnnotation());
+		//ret.setPersistentEntityAnnotation(getPersistentEntityAnnotation());
+		ret.setPrimaryKey(getPrimaryKey());
 		ret.setRawType(getRawType());
 		ret.setRelationClass(getRelationClass());
 		ret.setRelationClassPersistentRepositoryConfigAnnotation(getRelationClassPersistentRepositoryConfigAnnotation());

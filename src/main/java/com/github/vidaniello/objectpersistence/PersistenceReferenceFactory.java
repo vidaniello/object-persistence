@@ -279,15 +279,19 @@ public class PersistenceReferenceFactory {
 		//String repoName = classValue.getCanonicalName();
 		String key = "";
 		
-		PersistentEntity persistentEntityAnnotation = meth.getAnnotation(PersistentEntity.class);
-		pori.setObjectReferencePersistentRepositoryConfigAnnotation(meth.getAnnotation(PersistentRepositoryConfig.class));
+		PersistentRepositoryConfig prc = meth.getAnnotation(PersistentRepositoryConfig.class);
+		String pKey = prc.primaryKey();
+		//PersistentEntity persistentEntityAnnotation = meth.getAnnotation(PersistentEntity.class);
+		pori.setObjectReferencePersistentRepositoryConfigAnnotation(prc);
 		
-		if(persistentEntityAnnotation!=null) {
+		if(!pKey.isEmpty()) {
 			
-			pori.setPersistentEntityAnnotation(persistentEntityAnnotation);
+			//pori.setPersistentEntityAnnotation(persistentEntityAnnotation);
+			pori.setPrimaryKey(pKey);
 			
 			//Construction of key
-			key = getDynamicKeyByPattern(persistentEntityAnnotation.primaryKey(), dynamicKeyInstance);
+			//key = getDynamicKeyByPattern(persistentEntityAnnotation.primaryKey(), dynamicKeyInstance);
+			key = getDynamicKeyByPattern(pKey, dynamicKeyInstance);
 			
 			//if(!persistentEntityAnnotation.repoName().isEmpty()) 
 				//repoName = persistentEntityAnnotation.repoName();

@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target({ /*TYPE,*/ METHOD })
+@Deprecated
 public @interface PersistentEntity {
 
 	/**
