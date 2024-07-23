@@ -2,7 +2,7 @@ package com.github.vidaniello.objectpersistence;
 
 import java.io.Serializable;
 
-public interface PersistentObjectReference</*KEY, */VALUE> extends Serializable {
+public interface PersistentObjectReference</*KEY, */VALUE> extends PersistentReference, Serializable {
 
 	//public String getRepoName();
 	public PersistentObjectReferenceInfo getPersistentObjectReferenceInfo();

@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.vidaniello.objectpersistence.enanchment.DynamicPersistentClassHandler;
+import com.github.vidaniello.objectpersistence.enanchment.Enancher;
 
 public class TestEnanchment {
 	
@@ -31,39 +32,39 @@ public class TestEnanchment {
 		try {			
 			
 			String example = "getSomeField";
-			String resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			String resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("someField".equals(resp));
 			
 			example = "setSomeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("someField".equals(resp));
 			
 			example = "isSomeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("someField".equals(resp));
 			
 			example = "getsomeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("someField".equals(resp));
 			
 			example = "getSOmeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("sOmeField".equals(resp));
 			
 			example = "getSOmeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("sOmeField".equals(resp));
 			
 			example = "SOmeField";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("SOmeField".equals(resp));
 			
 			example = "x";
-			resp = DynamicPersistentClassHandler.geFieldName(example, false);
+			resp = Enancher.geFieldName(example, false);
 			Assert.assertTrue("x".equals(resp));
 			
 			example = "x";
-			resp = DynamicPersistentClassHandler.geFieldName(example, true);
+			resp = Enancher.geFieldName(example, true);
 			Assert.assertTrue(resp==null);
 			
 		} catch (Exception e) {

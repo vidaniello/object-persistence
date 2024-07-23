@@ -10,10 +10,11 @@ public class EnancherCache {
 	
 	
 	private Map<Class<?>,ClassConfiguration<?>> _cache;
-	private synchronized Map<Class<?>,ClassConfiguration<?>> getCache() {
+	synchronized Map<Class<?>,ClassConfiguration<?>> getCache() {
 		if(_cache==null)
 			_cache = new HashMap<>();
 		return _cache;
 	}
+	
 
 }
