@@ -34,11 +34,28 @@
 
 
 		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
+		<!--
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.12.495</version>
 		</dependency>
+		-->
+
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.762</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>1.12.762</version>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
 		<dependency>
