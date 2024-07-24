@@ -1,14 +1,35 @@
 package com.github.vidaniello.objectpersistence.enanchment;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import com.github.vidaniello.objectpersistence.PersistentRepositoryConfig;
 
+import javassist.util.proxy.ProxyFactory;
+
 public class Enancher {
 	
-	
+	public static <T> T getNewProxyInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException{
+		
+		ClassConfiguration<T> cfg = getEnanchedClassConfiguration(clazz);
+		
+		if(cfg!=null) {
+			
+			DynamicPersistentClassMethodHandler<T> hnd = new DynamicPersistentClassMethodHandler<>(cfg);
+			
+			ProxyFactory pf = EnancherCache.get().getProxyFactory(clazz, cfg);
+			
+			@SuppressWarnings("unchecked")
+			T newInstance = (T) pf.create(new Class[0], new Object[0], hnd);
+			
+			return newInstance;
+			
+		}
+		
+		return clazz.newInstance();
+	}
 	
 	public static synchronized boolean isClassEnanched(Class<?> clazz) {
 		return getEnanchedClassConfiguration(clazz)!=null;
@@ -34,6 +55,10 @@ public class Enancher {
 	
 	
 	
+	
+	
+	
+	
 	public static <T> ClassConfiguration<T> scanClass(Class<T> clazz) {
 		
 		ClassConfiguration<T> clazzConf = new ClassConfiguration<>(clazz);
@@ -52,6 +77,7 @@ public class Enancher {
 				PersistentRepositoryConfig prc = field.getAnnotation(PersistentRepositoryConfig.class);
 				efc.setPersistentRepositoryConfig(prc);
 				findGetterAndSetterByNamingConvention(field,efc);
+				clazzConf.getManagedFieldEntities().add(efc);
 			}
 		}
 		
@@ -81,7 +107,7 @@ public class Enancher {
 		}
 		
 		if(getter!=null)
-			if(getter.getReturnType().equals(void.class)) {
+			if(getter.getReturnType().equals(enityClass)) {
 				getter.setAccessible(true);
 				efc.setGetterMethod(getter);
 			}

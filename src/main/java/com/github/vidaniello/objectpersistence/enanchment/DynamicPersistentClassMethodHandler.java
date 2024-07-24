@@ -8,34 +8,27 @@ import com.github.vidaniello.objectpersistence.PersistentReference;
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
 
-public class DynamicPersistentClassHandler<T> implements MethodHandler, MethodFilter {
+public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 
 	private ClassConfiguration<T> classConfiguration;
 	private Map<Method,PersistentReference> references;
 	
-	private DynamicPersistentClassHandler() {
+	private DynamicPersistentClassMethodHandler() {
 		
 	}
 	
-	DynamicPersistentClassHandler(ClassConfiguration<T> classConfiguration) {
+	DynamicPersistentClassMethodHandler(ClassConfiguration<T> classConfiguration) {
 		this.classConfiguration = classConfiguration;
 	}
 		
 	@Override
-	public boolean isHandled(Method m) {
-		
-		
-		//if(ret) {
-			//check annotated field
-		//}
-		
-		return true;
-	}
-
-	@Override
 	public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable {
 		
-		return null;
+		//Before
+		Object fromMethod = proceed.invoke(self, args);
+		//After
+		
+		return fromMethod;
 	}
 	
 	

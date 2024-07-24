@@ -6,7 +6,7 @@ import java.util.List;
 public class ClassConfiguration<T> {
 	
 	private Class<T> originalClass;
-	private Class<T> enanchedClass;
+	//private Class<T> enanchedClass;
 	private boolean hasPersistentFields;
 	private List<EntityFieldConfiguration> managedFieldEntities;
 	
@@ -22,6 +22,7 @@ public class ClassConfiguration<T> {
 		return originalClass;
 	}
 	
+	/*
 	public Class<T> getEnanchedClass() {
 		return enanchedClass;
 	}
@@ -29,6 +30,7 @@ public class ClassConfiguration<T> {
 	public void setEnanchedClass(Class<T> enanchedClass) {
 		this.enanchedClass = enanchedClass;
 	}
+	*/
 	
 	public List<EntityFieldConfiguration> getManagedFieldEntities() {
 		if(managedFieldEntities==null)

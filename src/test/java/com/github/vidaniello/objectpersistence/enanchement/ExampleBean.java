@@ -2,6 +2,8 @@ package com.github.vidaniello.objectpersistence.enanchement;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.github.vidaniello.objectpersistence.PersistentRepositoryConfig;
 
@@ -21,6 +23,10 @@ public class ExampleBean implements Serializable {
 	private transient List<ObjectToPersist> listObjectToPersist;
 	@PersistentRepositoryConfig
 	private transient ObjectToPersist objectToPersist2;
+	@PersistentRepositoryConfig
+	private transient Set<ObjectToPersist> setObjectToPersist;
+	@PersistentRepositoryConfig
+	private transient Map<Integer,ObjectToPersist> mapObjectToPersist;
 
 	public String getField1() {
 		return field1;
@@ -76,6 +82,14 @@ public class ExampleBean implements Serializable {
 
 	public void setObjectToPersist2(ObjectToPersist objectToPersist2) {
 		this.objectToPersist2 = objectToPersist2;
+	}
+	
+	public Map<Integer, ObjectToPersist> getMapObjectToPersist() {
+		return mapObjectToPersist;
+	}
+	
+	public void setMapObjectToPersist(Map<Integer, ObjectToPersist> mapObjectToPersist) {
+		this.mapObjectToPersist = mapObjectToPersist;
 	}
 
 }

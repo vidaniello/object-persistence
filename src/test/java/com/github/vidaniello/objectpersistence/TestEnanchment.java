@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.vidaniello.objectpersistence.enanchment.DynamicPersistentClassHandler;
+import com.github.vidaniello.objectpersistence.enanchement.ExampleBean;
+import com.github.vidaniello.objectpersistence.enanchment.ClassConfiguration;
+import com.github.vidaniello.objectpersistence.enanchment.DynamicPersistentClassMethodHandler;
 import com.github.vidaniello.objectpersistence.enanchment.Enancher;
 
 public class TestEnanchment {
@@ -77,8 +79,25 @@ public class TestEnanchment {
 	public void test2() {
 		try {			
 			
+			ClassConfiguration<ExampleBean> cc = Enancher.getEnanchedClassConfiguration(ExampleBean.class);
+			
+			Assert.assertTrue(cc!=null);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new AssertionError(e);
+		}
+	}
+	
+	@Test
+	public void test3() {
+		try {			
+			
+			ExampleBean eb1 = Enancher.getNewProxyInstance(ExampleBean.class);
+			
+			ExampleBean eb2 = Enancher.getNewProxyInstance(ExampleBean.class);
 			
 			
+			int i = 0;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new AssertionError(e);
