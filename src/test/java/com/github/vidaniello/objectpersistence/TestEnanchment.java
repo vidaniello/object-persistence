@@ -96,6 +96,9 @@ public class TestEnanchment {
 			
 			ExampleBean eb2 = Enancher.getNewProxyInstance(ExampleBean.class);
 			
+			eb1.getField1();
+			
+			eb1.getObjectToPersist();
 			
 			int i = 0;
 		} catch (Exception e) {
