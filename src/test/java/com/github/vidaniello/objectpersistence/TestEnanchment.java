@@ -98,7 +98,13 @@ public class TestEnanchment {
 			
 			eb1.getField1();
 			
-			eb1.getObjectToPersist();
+			new Thread(()->{
+				eb1.getObjectToPersist();
+			}).start();
+			
+			new Thread(()->{
+				eb1.getObjectToPersist();
+			}).start();
 			
 			int i = 0;
 		} catch (Exception e) {

@@ -7,7 +7,7 @@ import java.util.UUID;
 class PersistentObjectReferenceInfo implements Cloneable {
 	
 	private Class<?> relationClass;
-	private PersistentRepositoryConfig relationClassPersistentRepositoryConfigAnnotation;
+	//private PersistentRepositoryConfig relationClassPersistentRepositoryConfigAnnotation;
 	//private Class<?> keyType;
 	private Class<?> valueType;
 	private boolean isValueTypeParametrized;
@@ -37,14 +37,18 @@ class PersistentObjectReferenceInfo implements Cloneable {
 		this.relationClass = relationClass;
 	}
  
+	/*
 	PersistentRepositoryConfig getRelationClassPersistentRepositoryConfigAnnotation() {
 		return relationClassPersistentRepositoryConfigAnnotation;
 	}
+	*/
 	
+	/*
 	void setRelationClassPersistentRepositoryConfigAnnotation(
 			PersistentRepositoryConfig relationClassPersistentRepositoryConfigAnnotation) {
 		this.relationClassPersistentRepositoryConfigAnnotation = relationClassPersistentRepositoryConfigAnnotation;
 	}
+	*/
 	
 	/*
 	Class<?> getKeyType() {
@@ -200,7 +204,7 @@ class PersistentObjectReferenceInfo implements Cloneable {
 		ret.setPrimaryKey(getPrimaryKey());
 		ret.setRawType(getRawType());
 		ret.setRelationClass(getRelationClass());
-		ret.setRelationClassPersistentRepositoryConfigAnnotation(getRelationClassPersistentRepositoryConfigAnnotation());
+		//ret.setRelationClassPersistentRepositoryConfigAnnotation(getRelationClassPersistentRepositoryConfigAnnotation());
 		ret.setTypeName(getTypeName());
 		ret.setValueType(getValueType());
 		ret.setValueTypeParametrized(isValueTypeParametrized());
