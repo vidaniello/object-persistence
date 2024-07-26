@@ -17,14 +17,25 @@ public class ExampleBean implements Serializable {
 	private Float field2;
 	private boolean a;
 	private String field4;
+	
 	@PersistentRepositoryConfig
 	private transient ObjectToPersist objectToPersist;
+	
+	@PersistentRepositoryConfig
+	private transient GenericContainer<ObjectToPersist> objectToPersistWrapped;
+	
+	@PersistentRepositoryConfig
+	private transient GenericContainer<List<ObjectToPersist>> listObjectToPersistWrapped;
+	
 	@PersistentRepositoryConfig
 	private transient List<ObjectToPersist> listObjectToPersist;
+	
 	@PersistentRepositoryConfig
 	private transient ObjectToPersist objectToPersist2;
+	
 	@PersistentRepositoryConfig
 	private transient Set<ObjectToPersist> setObjectToPersist;
+	
 	@PersistentRepositoryConfig
 	private transient Map<Integer,ObjectToPersist> mapObjectToPersist;
 
@@ -66,6 +77,22 @@ public class ExampleBean implements Serializable {
 
 	public void setObjectToPersist(ObjectToPersist objectToPersist) {
 		this.objectToPersist = objectToPersist;
+	}
+	
+	public GenericContainer<ObjectToPersist> getObjectToPersistWrapped() {
+		return objectToPersistWrapped;
+	}
+	
+	public Set<ObjectToPersist> getSetObjectToPersist() {
+		return setObjectToPersist;
+	}
+	
+	public GenericContainer<List<ObjectToPersist>> getListObjectToPersistWrapped() {
+		return listObjectToPersistWrapped;
+	}
+	
+	public void setListObjectToPersistWrapped(GenericContainer<List<ObjectToPersist>> listObjectToPersistWrapped) {
+		this.listObjectToPersistWrapped = listObjectToPersistWrapped;
 	}
 
 	public List<ObjectToPersist> getListObjectToPersist() {

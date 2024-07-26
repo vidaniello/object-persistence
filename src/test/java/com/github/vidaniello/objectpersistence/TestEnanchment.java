@@ -1,5 +1,9 @@
 package com.github.vidaniello.objectpersistence;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -89,6 +93,41 @@ public class TestEnanchment {
 	}
 	
 	@Test
+	public void test2_5() {
+		try {			
+			
+			ExampleBean eb1 = new ExampleBean();
+			
+			Field a = eb1.getClass().getDeclaredField("objectToPersist");
+			Type ta = a.getGenericType();
+			Class<?> ca = ta.getClass();
+			Assert.assertTrue(Class.class.isAssignableFrom(ca));
+			Assert.assertTrue(!ParameterizedType.class.isAssignableFrom(ca));
+			
+			Field b = eb1.getClass().getDeclaredField("listObjectToPersist");
+			Type tb = b.getGenericType();
+			Class<?> cb = tb.getClass();
+			Assert.assertTrue(ParameterizedType.class.isAssignableFrom(cb));
+			Assert.assertTrue(!Class.class.isAssignableFrom(cb));
+			
+			Field c = eb1.getClass().getDeclaredField("objectToPersistWrapped");
+			Type tc = c.getGenericType();
+			Class<?> cc = tc.getClass();
+			Assert.assertTrue(ParameterizedType.class.isAssignableFrom(cc));
+			
+			Field d = eb1.getClass().getDeclaredField("listObjectToPersistWrapped");
+			Type td = d.getGenericType();
+			Class<?> cd = td.getClass();
+			Assert.assertTrue(ParameterizedType.class.isAssignableFrom(cd));
+			
+			int i = 0;
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new AssertionError(e);
+		}
+	}
+	
+	@Test
 	public void test3() {
 		try {			
 			
@@ -101,11 +140,11 @@ public class TestEnanchment {
 			new Thread(()->{
 				eb1.getObjectToPersist();
 			}).start();
-			
+			/*
 			new Thread(()->{
 				eb1.getObjectToPersist();
 			}).start();
-			
+			*/
 			int i = 0;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

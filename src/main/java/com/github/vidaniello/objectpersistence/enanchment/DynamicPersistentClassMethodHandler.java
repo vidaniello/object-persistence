@@ -31,20 +31,23 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	@Override
 	public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable {
 		
-		synchronized (references.get(proceed)) {
-			EntityFieldWrapper efw = references.get(proceed);
+		synchronized (references.get(thisMethod)) {
+			EntityFieldWrapper efw = references.get(thisMethod);
+			
+			Method getter = efw.getEntityFieldConfiguration().getGetterMethod();
+			Method setter = efw.getEntityFieldConfiguration().getSetterMethod();
 			
 			//initialization of persistent reference
 			if(efw.getPersistentReference()==null) initPersistentReference(efw, self);
 			
-			if(proceed.equals(efw.getEntityFieldConfiguration().getGetterMethod()))
+			if(thisMethod.equals(efw.getEntityFieldConfiguration().getGetterMethod()))
 				loadField(efw, self);
 			
 			//Before
 			Object fromMethod = proceed.invoke(self, args);
 			//After
 			
-			if(proceed.equals(efw.getEntityFieldConfiguration().getSetterMethod()))
+			if(thisMethod.equals(efw.getEntityFieldConfiguration().getSetterMethod()))
 				saveField(efw, self);
 			
 			return fromMethod;

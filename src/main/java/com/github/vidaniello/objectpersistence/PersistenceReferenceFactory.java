@@ -316,7 +316,7 @@ public class PersistenceReferenceFactory {
 	
 	public static <VALUE>  PersistentObjectReference<VALUE> getReference(Field annotatedField, Object dynKeyInst) throws Exception{
 		
-		PersistentObjectReference</*KEY,*/ VALUE> ret = null;
+		PersistentObjectReference<VALUE> ret = null;
 		
 		try {
 
@@ -342,23 +342,23 @@ public class PersistenceReferenceFactory {
 		
 		pori.setRelationClass(relationClass);	
 				
-		Type[] genRetTypes = ((ParameterizedType)annotatedField.getGenericType()).getActualTypeArguments();
+		Type genericType = annotatedField.getGenericType();
+				
+		if(Class.class.isAssignableFrom(genericType.getClass())) {
+			
+		}
 		
-		/*
-		Class<KEY> classKey = null;
-		if(Class.class.isAssignableFrom(genRetTypes[0].getClass()))
-				classKey = (Class<KEY>) genRetTypes[0];
-		*/
-		
+		//Type[] genRetTypes = ((ParameterizedType)annotatedField.getType().getGenericSuperclass()).getActualTypeArguments();
+				
 		Class<VALUE> classValue = null;
-		Class<?> dd = genRetTypes[0].getClass();
-		if(Class.class.isAssignableFrom(genRetTypes[0].getClass())) {
+		
+		if(Class.class.isAssignableFrom(genericType.getClass())) {
 			if(!Map.class.isAssignableFrom(annotatedField.getType()))
-				classValue = (Class<VALUE>) genRetTypes[0];
+				classValue = (Class<VALUE>) genericType;
 			else
 				classValue = (Class<VALUE>) genRetTypes[1];
 		} else {
-			ParameterizedType parType = ((ParameterizedType)genRetTypes[0]);
+			ParameterizedType parType = null;/*((ParameterizedType)genRetTypes[0]);*/
 			
 			pori.setValueTypeParametrized(true);
 			pori.setTypeName(parType.getTypeName());
@@ -368,40 +368,17 @@ public class PersistenceReferenceFactory {
 			classValue = (Class<VALUE>) rawType;
 		}
 		
-		//pori.setKeyType(classKey);
 		pori.setValueType(classValue);
 		
-		//String repoName = classValue.getCanonicalName();
 		String key = "";
 		
-		PersistentRepositoryConfig prc = meth.getAnnotation(PersistentRepositoryConfig.class);
+		PersistentRepositoryConfig prc = annotatedField.getAnnotation(PersistentRepositoryConfig.class);
 		String pKey = prc.primaryKey();
-		//PersistentEntity persistentEntityAnnotation = meth.getAnnotation(PersistentEntity.class);
 		pori.setObjectReferencePersistentRepositoryConfigAnnotation(prc);
 		
 		if(!pKey.isEmpty()) {
-			
-			//pori.setPersistentEntityAnnotation(persistentEntityAnnotation);
 			pori.setPrimaryKey(pKey);
-			
-			//Construction of key
-			//key = getDynamicKeyByPattern(persistentEntityAnnotation.primaryKey(), dynamicKeyInstance);
-			key = getDynamicKeyByPattern(pKey, dynamicKeyInstance);
-			
-			//if(!persistentEntityAnnotation.repoName().isEmpty()) 
-				//repoName = persistentEntityAnnotation.repoName();
-						
-			/*
-			else {
-			
-				//Static key, default empty String
-				key = persistentEntityAnnotation.staticKey();
-			
-				//Dynamic key
-				if(!persistentEntityAnnotation.dynamicKey_name().isEmpty() && dynamicKeyInstance!=null) 
-					key = getDynamicKey(persistentEntityAnnotation, dynamicKeyInstance) + key;
-			}
-			*/
+			key = getDynamicKeyByPattern(pKey, dynKeyInst);
 		}
 		
 		pori.setCalculatedKey(key);
