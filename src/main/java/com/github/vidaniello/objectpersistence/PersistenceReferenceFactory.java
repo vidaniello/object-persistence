@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -310,9 +311,56 @@ public class PersistenceReferenceFactory {
 	
 	
 	
+	@SuppressWarnings("unchecked")
+	public static <VALUE>  PersistentList<VALUE> getListReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
+		
+		PersistentList<VALUE> ret = null;
+				
+		try {
+
+			PersistentObjectReferenceInfo pori = getPersistentObjectReferenceInfo(annotatedField, dynKeyInst);
+			
+			PersistentObjectReference<List<PersistentObjectReference<VALUE>>> wrappedReference =	
+					new PersistentObjectReferenceImpl<List<PersistentObjectReference<VALUE>>>(pori.getCalculatedKey())
+				.setPersistentObjectReferenceInfo(pori);
+			
+			if(preInstancedField==null)
+				preInstancedField = new ArrayList<>();
+			
+			ret = new PersistentListImpl<VALUE>(wrappedReference, (List<PersistentObjectReference<VALUE>>) preInstancedField);
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return ret;
+	}
 	
 	
-	
+	@SuppressWarnings("unchecked")
+	public static <VALUE>  PersistentCollection<VALUE> getCollectionReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
+		
+		PersistentCollection<VALUE> ret = null;
+				
+		try {
+
+			PersistentObjectReferenceInfo pori = getPersistentObjectReferenceInfo(annotatedField, dynKeyInst);
+			
+			PersistentObjectReference<Collection<PersistentObjectReference<VALUE>>> wrappedReference =	
+					new PersistentObjectReferenceImpl<Collection<PersistentObjectReference<VALUE>>>(pori.getCalculatedKey())
+				.setPersistentObjectReferenceInfo(pori);
+			
+			if(preInstancedField==null)
+				preInstancedField = new ArrayList<>();
+			
+			ret = new PersistentCollectionImpl<VALUE>(wrappedReference, (Collection<PersistentObjectReference<VALUE>>) preInstancedField);
+			
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return ret;
+	}
 	
 	public static <VALUE>  PersistentObjectReference<VALUE> getReference(Field annotatedField, Object dynKeyInst) throws Exception{
 		
@@ -343,30 +391,83 @@ public class PersistenceReferenceFactory {
 		pori.setRelationClass(relationClass);	
 				
 		Type genericType = annotatedField.getGenericType();
-				
-		if(Class.class.isAssignableFrom(genericType.getClass())) {
-			
-		}
 		
-		//Type[] genRetTypes = ((ParameterizedType)annotatedField.getType().getGenericSuperclass()).getActualTypeArguments();
-				
 		Class<VALUE> classValue = null;
-		
 		if(Class.class.isAssignableFrom(genericType.getClass())) {
-			if(!Map.class.isAssignableFrom(annotatedField.getType()))
-				classValue = (Class<VALUE>) genericType;
-			else
-				classValue = (Class<VALUE>) genRetTypes[1];
+			
+			//ConcreteClass
+			classValue = (Class<VALUE>) genericType;
+			
 		} else {
-			ParameterizedType parType = null;/*((ParameterizedType)genRetTypes[0]);*/
 			
-			pori.setValueTypeParametrized(true);
-			pori.setTypeName(parType.getTypeName());
-			Type rawType = parType.getRawType();
-			pori.setRawType(rawType);
+			//GerericWrapper<ConcreteClass>
+			//GerericWrapper<Collection<ConcreteClass>>
+			//Collection<ConcreteClass>
+			//Collection<GerericWrapper<ConcreteClass>>
+			//Map<key,ConcreteClass>
 			
-			classValue = (Class<VALUE>) rawType;
+			Type[] genRetTypes = ((ParameterizedType)genericType).getActualTypeArguments();
+			
+			if(Map.class.isAssignableFrom(annotatedField.getType())) {
+				
+				//Map<key,ConcreteClass>
+				//Map<key,GerericWrapper<ConcreteClass>>
+				
+				//Check the key is not a generic type
+				Type typeKey = genRetTypes[0];
+				
+				//Map<GerericWrapper<ConcreteClass>,ConcreteClass>
+				if(!Class.class.isAssignableFrom(typeKey.getClass()))
+					throw new IllegalArgumentException("Generic type for a Map key not allowed!");			
+				
+				Type typeValue = genRetTypes[1];
+				
+				if(Class.class.isAssignableFrom(typeValue.getClass()))
+					//Map<key,ConcreteClass>
+					classValue = (Class<VALUE>) typeValue;
+				else {
+					//Map<key,GerericWrapper<ConcreteClass>>
+					ParameterizedType parType = (ParameterizedType) typeValue;
+					
+					pori.setValueTypeParametrized(true);
+					pori.setTypeName(parType.getTypeName());
+					Type rawType = parType.getRawType();
+					pori.setRawType(rawType);
+					
+					classValue = (Class<VALUE>) rawType;
+				}
+				
+			} else {
+				
+				//GerericWrapper<ConcreteClass>
+				//GerericWrapper<Collection<ConcreteClass>>
+				//Collection<ConcreteClass>
+				//Collection<GerericWrapper<ConcreteClass>>
+				
+				Type type = genRetTypes[0];
+				
+				if(Class.class.isAssignableFrom(type.getClass()))
+					//GerericWrapper<ConcreteClass>
+					//Collection<ConcreteClass>
+					classValue = (Class<VALUE>) type;
+				else {
+					//GerericWrapper<Collection<ConcreteClass>>
+					//Collection<GerericWrapper<ConcreteClass>>
+					ParameterizedType parType = (ParameterizedType) type;
+					
+					pori.setValueTypeParametrized(true);
+					pori.setTypeName(parType.getTypeName());
+					Type rawType = parType.getRawType();
+					pori.setRawType(rawType);
+					
+					classValue = (Class<VALUE>) rawType;
+				}
+				
+			}
+			
+			
 		}
+			
 		
 		pori.setValueType(classValue);
 		

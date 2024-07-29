@@ -18,7 +18,7 @@ public class ExampleBean implements Serializable {
 	private boolean a;
 	private String field4;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig()
 	private transient ObjectToPersist objectToPersist;
 	
 	@PersistentRepositoryConfig
@@ -38,6 +38,11 @@ public class ExampleBean implements Serializable {
 	
 	@PersistentRepositoryConfig
 	private transient Map<Integer,ObjectToPersist> mapObjectToPersist;
+	
+	public ExampleBean() {
+		
+	}
+	
 
 	public String getField1() {
 		return field1;

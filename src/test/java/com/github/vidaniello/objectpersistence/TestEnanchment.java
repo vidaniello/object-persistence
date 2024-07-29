@@ -120,7 +120,13 @@ public class TestEnanchment {
 			Class<?> cd = td.getClass();
 			Assert.assertTrue(ParameterizedType.class.isAssignableFrom(cd));
 			
-			int i = 0;
+			Field e = eb1.getClass().getDeclaredField("mapObjectToPersist");
+			Type te = e.getGenericType();
+			Class<?> ce = te.getClass();
+			Assert.assertTrue(ParameterizedType.class.isAssignableFrom(ce));
+			Type[] ceTypes = ((ParameterizedType)te).getActualTypeArguments();
+			Assert.assertTrue(ceTypes.length==2);
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new AssertionError(e);
@@ -138,7 +144,7 @@ public class TestEnanchment {
 			eb1.getField1();
 			
 			new Thread(()->{
-				eb1.getObjectToPersist();
+				eb1.getListObjectToPersistWrapped();
 			}).start();
 			/*
 			new Thread(()->{
