@@ -326,6 +326,8 @@ public class PersistenceReferenceFactory {
 			
 			if(preInstancedField==null)
 				preInstancedField = new ArrayList<>();
+			else
+				preInstancedField = preInstancedField.getClass().newInstance();
 			
 			ret = new PersistentListImpl<VALUE>(wrappedReference, (List<PersistentObjectReference<VALUE>>) preInstancedField);
 			
@@ -338,7 +340,7 @@ public class PersistenceReferenceFactory {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static <VALUE>  PersistentCollection<VALUE> getCollectionReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
+	public static <VALUE> PersistentCollection<VALUE> getCollectionReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
 		
 		PersistentCollection<VALUE> ret = null;
 				
@@ -352,6 +354,8 @@ public class PersistenceReferenceFactory {
 			
 			if(preInstancedField==null)
 				preInstancedField = new ArrayList<>();
+			else
+				preInstancedField = preInstancedField.getClass().newInstance();
 			
 			ret = new PersistentCollectionImpl<VALUE>(wrappedReference, (Collection<PersistentObjectReference<VALUE>>) preInstancedField);
 			
@@ -362,7 +366,7 @@ public class PersistenceReferenceFactory {
 		return ret;
 	}
 	
-	public static <VALUE>  PersistentObjectReference<VALUE> getReference(Field annotatedField, Object dynKeyInst) throws Exception{
+	public static <VALUE> PersistentObjectReference<VALUE> getReference(Field annotatedField, Object dynKeyInst) throws Exception{
 		
 		PersistentObjectReference<VALUE> ret = null;
 		
@@ -471,16 +475,19 @@ public class PersistenceReferenceFactory {
 		
 		pori.setValueType(classValue);
 		
-		String key = "";
+		
 		
 		PersistentRepositoryConfig prc = annotatedField.getAnnotation(PersistentRepositoryConfig.class);
-		String pKey = prc.primaryKey();
 		pori.setObjectReferencePersistentRepositoryConfigAnnotation(prc);
 		
-		if(!pKey.isEmpty()) {
-			pori.setPrimaryKey(pKey);
-			key = getDynamicKeyByPattern(pKey, dynKeyInst);
-		}
+		String key = "";
+		String pKey = prc.primaryKey();
+		if(pKey.isEmpty())
+			pKey = annotatedField.getName();
+		
+		pori.setPrimaryKey(pKey);
+		key = getDynamicKeyByPattern(pKey, dynKeyInst);
+		
 		
 		pori.setCalculatedKey(key);
 		
@@ -569,11 +576,19 @@ public class PersistenceReferenceFactory {
 	*/
 	
 	private static Field getField(String fieldName, Object dynamicKeyInstance) throws Exception {
-		return dynamicKeyInstance.getClass().getDeclaredField(fieldName);
+		try {
+			return dynamicKeyInstance.getClass().getField(fieldName);
+		} catch (NoSuchFieldException e) {
+			return dynamicKeyInstance.getClass().getDeclaredField(fieldName);
+		}
 	}
 	
 	private static Method getMethod(String methodName, Object dynamicKeyInstance) throws Exception {
-		return dynamicKeyInstance.getClass().getDeclaredMethod( methodName.endsWith("()") ? methodName.replace("()", "") : methodName);
+		try {
+			return dynamicKeyInstance.getClass().getMethod( methodName.endsWith("()") ? methodName.replace("()", "") : methodName);
+		} catch (NoSuchMethodException e) {
+			return dynamicKeyInstance.getClass().getDeclaredMethod( methodName.endsWith("()") ? methodName.replace("()", "") : methodName);
+		}
 	}
 	
 	private static String getContent(Field field, Object dynamicKeyInstance) throws Exception {

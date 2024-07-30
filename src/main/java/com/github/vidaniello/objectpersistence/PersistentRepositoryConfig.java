@@ -20,6 +20,10 @@ public @interface PersistentRepositoryConfig {
 	 */
 	String repoName() default "";
 	
+	/**
+	 * If not specified, the field name is taken as primary key
+	 * @return
+	 */
 	String primaryKey() default "";
 	
 	Class<? extends PersistManager> repositoryClassImplementation() default InMemoryPersistManager.class;

@@ -1,5 +1,6 @@
 package com.github.vidaniello.objectpersistence;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.vidaniello.objectpersistence.enanchement.ExampleBean;
+import com.github.vidaniello.objectpersistence.enanchement.ObjectToPersist;
 import com.github.vidaniello.objectpersistence.enanchment.ClassConfiguration;
 import com.github.vidaniello.objectpersistence.enanchment.DynamicPersistentClassMethodHandler;
 import com.github.vidaniello.objectpersistence.enanchment.Enancher;
@@ -28,6 +30,11 @@ public class TestEnanchment {
 
 		// private org.apache.logging.log4j.Logger log =
 		// org.apache.logging.log4j.LogManager.getLogger();
+		
+		System.setProperty(
+				DiskPersistManagerDefault.diskpersistence_basepath_systemProperty, 
+				DiskPersistManagerDefault.defaultBasePath+File.separator+"test"
+			);
 		
 	}
 	
@@ -138,14 +145,26 @@ public class TestEnanchment {
 		try {			
 			
 			ExampleBean eb1 = Enancher.getNewProxyInstance(ExampleBean.class);
+			eb1.setId(1);
 			
-			ExampleBean eb2 = Enancher.getNewProxyInstance(ExampleBean.class);
+			ObjectToPersist otp = eb1.getObjectToPersist();
 			
-			eb1.getField1();
+			otp = new ObjectToPersist();
+			otp.setData(new String("a str").getBytes());
+			otp.setLenght(5l);
+			otp.setType("text/plain");
 			
+			eb1.setObjectToPersist(otp);
+			
+			//ExampleBean eb2 = Enancher.getNewProxyInstance(ExampleBean.class);
+			
+			//eb1.getField1();
+			
+			/*
 			new Thread(()->{
 				eb1.getListObjectToPersistWrapped();
 			}).start();
+			*/
 			/*
 			new Thread(()->{
 				eb1.getObjectToPersist();

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.vidaniello.objectpersistence.DiskPersistManagerDefault;
 import com.github.vidaniello.objectpersistence.PersistentRepositoryConfig;
+import com.github.vidaniello.objectpersistence.Property;
 
 public class ExampleBean implements Serializable {
 
@@ -13,12 +15,19 @@ public class ExampleBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Integer id;
 	private String field1;
 	private Float field2;
 	private boolean a;
 	private String field4;
 	
-	@PersistentRepositoryConfig()
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.objectToPersist",
+			//primaryKey = "collectionOfSimplePojos",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/")
+			})
 	private transient ObjectToPersist objectToPersist;
 	
 	@PersistentRepositoryConfig
@@ -43,6 +52,13 @@ public class ExampleBean implements Serializable {
 		
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getField1() {
 		return field1;
