@@ -3,6 +3,7 @@ package com.github.vidaniello.objectpersistence.enanchement;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import com.github.vidaniello.objectpersistence.DiskPersistManagerDefault;
@@ -30,13 +31,28 @@ public class ExampleBean implements Serializable {
 			})
 	private transient ObjectToPersist objectToPersist;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.objectToPersistWrapped",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/")
+			})
 	private transient GenericContainer<ObjectToPersist> objectToPersistWrapped;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.listObjectToPersistWrapped",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/")
+			})
 	private transient GenericContainer<List<ObjectToPersist>> listObjectToPersistWrapped;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.listObjectToPersist",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/")
+			})
 	private transient List<ObjectToPersist> listObjectToPersist;
 	
 	@PersistentRepositoryConfig
@@ -104,6 +120,10 @@ public class ExampleBean implements Serializable {
 		return objectToPersistWrapped;
 	}
 	
+	public void setObjectToPersistWrapped(GenericContainer<ObjectToPersist> objectToPersistWrapped) {
+		this.objectToPersistWrapped = objectToPersistWrapped;
+	}
+	
 	public Set<ObjectToPersist> getSetObjectToPersist() {
 		return setObjectToPersist;
 	}
@@ -140,4 +160,22 @@ public class ExampleBean implements Serializable {
 		this.mapObjectToPersist = mapObjectToPersist;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExampleBean other = (ExampleBean) obj;
+		return Objects.equals(id, other.id);
+	}
+
+	
 }

@@ -49,7 +49,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			
 			//initialization of persistent reference
 			if(efw.getPersistentReference()==null) 
-				initPersistentReference(efw, self, proceed.invoke(self, args)); 
+				initPersistentReference(efw, self, proceed, args); 
 			
 			if(thisMethod.equals(efw.getEntityFieldConfiguration().getGetterMethod()))
 				return loadField(efw, self, proceed.invoke(self, args));
@@ -63,7 +63,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		
 	}
 	
-	private void initPersistentReference(EntityFieldWrapper efw, Object self, Object fromMethod) throws Exception {
+	private void initPersistentReference(EntityFieldWrapper efw, Object self, Method proceed, Object[] args) throws Exception {
 		
 		Class<?> entityClass = efw.getEntityFieldConfiguration().getField().getType();
 		
@@ -71,6 +71,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		
 		if(Iterable.class.isAssignableFrom(entityClass) || Map.class.isAssignableFrom(entityClass)) {			
 			
+			Object fromMethod = proceed.invoke(self, args);
 			
 			if(List.class.isAssignableFrom(entityClass)) {
 				//List

@@ -4,6 +4,8 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.vidaniello.objectpersistence.enanchement.ExampleBean;
+import com.github.vidaniello.objectpersistence.enanchement.GenericContainer;
 import com.github.vidaniello.objectpersistence.enanchement.ObjectToPersist;
 import com.github.vidaniello.objectpersistence.enanchment.ClassConfiguration;
 import com.github.vidaniello.objectpersistence.enanchment.DynamicPersistentClassMethodHandler;
@@ -147,18 +150,50 @@ public class TestEnanchment {
 			ExampleBean eb1 = Enancher.getNewProxyInstance(ExampleBean.class);
 			eb1.setId(1);
 			
+			ObjectToPersist newOtp = new ObjectToPersist();
+			newOtp.setData(new String("a str").getBytes());
+			newOtp.setLenght(5l);
+			newOtp.setType("text/plain");
+			
+			
+		
+			
+			/*
 			ObjectToPersist otp = eb1.getObjectToPersist();
 			
-			otp = new ObjectToPersist();
-			otp.setData(new String("a str").getBytes());
-			otp.setLenght(5l);
-			otp.setType("text/plain");
+			if(otp==null) {
+				otp = new ObjectToPersist();
+				otp.setData(new String("a str").getBytes());
+				otp.setLenght(5l);
+				otp.setType("text/plain");
+				
+				eb1.setObjectToPersist(otp);
+				
+				otp = eb1.getObjectToPersist();
+			}
+			*/
 			
-			eb1.setObjectToPersist(otp);
+			//GenericContainer<ObjectToPersist> gc = new GenericContainer<>();
+			//gc.setWrappedObject(newOtp);
+			//eb1.setObjectToPersistWrapped(gc);
+			
+			//GenericContainer<ObjectToPersist> gc = eb1.getObjectToPersistWrapped();
 			
 			//ExampleBean eb2 = Enancher.getNewProxyInstance(ExampleBean.class);
 			
 			//eb1.getField1();
+			
+			
+			//GenericContainer<List<ObjectToPersist>> gc = new GenericContainer<>();
+			//List<ObjectToPersist> l = new ArrayList<>();
+			//l.add(newOtp);
+			//gc.setWrappedObject(l);
+			
+			//eb1.setListObjectToPersistWrapped(gc);
+			
+			//GenericContainer<List<ObjectToPersist>> gc = eb1.getListObjectToPersistWrapped();
+			
+			eb1.getListObjectToPersist().add(newOtp);
 			
 			/*
 			new Thread(()->{

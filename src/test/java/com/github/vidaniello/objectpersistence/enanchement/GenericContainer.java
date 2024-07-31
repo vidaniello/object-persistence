@@ -1,7 +1,13 @@
 package com.github.vidaniello.objectpersistence.enanchement;
 
-public class GenericContainer<T> {
+import java.io.Serializable;
 
+public class GenericContainer<T> implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private T wrappedObject;
 	
 	public GenericContainer() {
