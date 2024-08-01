@@ -9,9 +9,11 @@ public class PersistentCollectionImpl<E> extends PersistentCollectionAbstractImp
 
 		
 	public PersistentCollectionImpl(
-			PersistentObjectReference<Collection<PersistentObjectReference<E>>> wrappedReference, 
-			Collection<PersistentObjectReference<E>> initialInstanceImplementation) {
-		super(wrappedReference, initialInstanceImplementation);
+			PersistentObjectReference<Collection<PersistentObjectReference<E>>> wrappedReference//, 
+			//>>>>>>>Collection<PersistentObjectReference<E>> initialInstanceImplementation
+			) {
+		//>>>>>>>>super(wrappedReference, initialInstanceImplementation);
+		super(wrappedReference);
 		/*
 		Objects.nonNull(wrappedReference);
 		Objects.nonNull(initialInstanceImplementation);

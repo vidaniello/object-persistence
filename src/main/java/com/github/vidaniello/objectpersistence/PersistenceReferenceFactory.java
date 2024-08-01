@@ -33,7 +33,7 @@ public class PersistenceReferenceFactory {
 	
 	
 	
-	
+	/*
 	public static <KEY, VALUE>  PersistentMap<KEY, VALUE> getMapReference(Object dynamicKeyInstance, Map<KEY,PersistentObjectReference<VALUE>> initialInstanceImplementation) throws Exception{
 		
 		PersistentMap<KEY, VALUE> ret = null;
@@ -62,7 +62,7 @@ public class PersistenceReferenceFactory {
 		
 		return ret;
 	}
-	
+	*/
 	
 	
 	
@@ -94,7 +94,7 @@ public class PersistenceReferenceFactory {
 	
 	
 	
-	
+	/*
 	public static <VALUE>  PersistentSet<VALUE> getSetReference(Object dynamicKeyInstance, Set<PersistentObjectReference<VALUE>> initialInstanceImplementation) throws Exception{
 		
 		PersistentSet<VALUE> ret = null;
@@ -121,7 +121,9 @@ public class PersistenceReferenceFactory {
 		}
 		return ret;
 	}
+	*/
 	
+	/*
 	public static <VALUE>  PersistentList<VALUE> getListReference(Object dynamicKeyInstance, List<PersistentObjectReference<VALUE>> initialInstanceImplementation) throws Exception{
 		
 		PersistentList<VALUE> ret = null;
@@ -148,7 +150,9 @@ public class PersistenceReferenceFactory {
 		}
 		return ret;
 	}
+	*/
 	
+	/*
 	public static <VALUE>  PersistentCollection<VALUE> getCollectionReference(Object dynamicKeyInstance, Collection<PersistentObjectReference<VALUE>> initialInstanceImplementation) throws Exception{
 		
 		PersistentCollection<VALUE> ret = null;
@@ -175,7 +179,7 @@ public class PersistenceReferenceFactory {
 		}
 		return ret;
 	}
-	
+	*/
 	
 	
 	
@@ -311,8 +315,8 @@ public class PersistenceReferenceFactory {
 	
 	
 	
-	@SuppressWarnings("unchecked")
-	public static <VALUE>  PersistentList<VALUE> getListReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
+	
+	public static <VALUE>  PersistentList<VALUE> getListReference(Field annotatedField, Object dynKeyInst/*, Object preInstancedField*/) throws Exception{
 		
 		PersistentList<VALUE> ret = null;
 				
@@ -323,13 +327,13 @@ public class PersistenceReferenceFactory {
 			PersistentObjectReference<List<PersistentObjectReference<VALUE>>> wrappedReference =	
 					new PersistentObjectReferenceImpl<List<PersistentObjectReference<VALUE>>>(pori.getCalculatedKey())
 				.setPersistentObjectReferenceInfo(pori);
-			
+			/*
 			if(preInstancedField==null)
 				preInstancedField = new ArrayList<>();
 			else
 				preInstancedField = preInstancedField.getClass().newInstance();
-			
-			ret = new PersistentListImpl<VALUE>(wrappedReference, (List<PersistentObjectReference<VALUE>>) preInstancedField);
+			*/
+			ret = new PersistentListImpl<VALUE>(wrappedReference/*, (List<PersistentObjectReference<VALUE>>) preInstancedField*/);
 			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -339,8 +343,8 @@ public class PersistenceReferenceFactory {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public static <VALUE> PersistentCollection<VALUE> getCollectionReference(Field annotatedField, Object dynKeyInst, Object preInstancedField) throws Exception{
+	
+	public static <VALUE> PersistentCollection<VALUE> getCollectionReference(Field annotatedField, Object dynKeyInst/*, Object preInstancedField*/) throws Exception{
 		
 		PersistentCollection<VALUE> ret = null;
 				
@@ -351,13 +355,13 @@ public class PersistenceReferenceFactory {
 			PersistentObjectReference<Collection<PersistentObjectReference<VALUE>>> wrappedReference =	
 					new PersistentObjectReferenceImpl<Collection<PersistentObjectReference<VALUE>>>(pori.getCalculatedKey())
 				.setPersistentObjectReferenceInfo(pori);
-			
+			/*
 			if(preInstancedField==null)
 				preInstancedField = new ArrayList<>();
 			else
 				preInstancedField = preInstancedField.getClass().newInstance();
-			
-			ret = new PersistentCollectionImpl<VALUE>(wrappedReference, (Collection<PersistentObjectReference<VALUE>>) preInstancedField);
+			*/
+			ret = new PersistentCollectionImpl<VALUE>(wrappedReference/*, (Collection<PersistentObjectReference<VALUE>>) preInstancedField*/);
 			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

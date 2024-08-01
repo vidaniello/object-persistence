@@ -410,8 +410,8 @@ public class SimpleContainerObject implements Serializable{
 			})
 	//@PersistentEntity(primaryKey = "collectionOfSimplePojos")
 	public synchronized PersistentCollection<SimplePojo> getCollectionOfSimplePojosRef() throws Exception{
-		if(collectionOfSimplePojos==null)
-			collectionOfSimplePojos = PersistenceReferenceFactory.getCollectionReference(this, new ArrayList<>());
+		//if(collectionOfSimplePojos==null)
+			//collectionOfSimplePojos = PersistenceReferenceFactory.getCollectionReference(this, new ArrayList<>());
 		return collectionOfSimplePojos;
 	}
 	
@@ -426,8 +426,8 @@ public class SimpleContainerObject implements Serializable{
 			})
 	//@PersistentEntity(primaryKey = "listOfSimplePojos")
 	public synchronized PersistentList<SimplePojo> getListOfSimplePojos() throws Exception{
-		if(listOfSimplePojos==null)
-			listOfSimplePojos = PersistenceReferenceFactory.getListReference(this, new ArrayList<>());
+		//if(listOfSimplePojos==null)
+			//listOfSimplePojos = PersistenceReferenceFactory.getListReference(this, new ArrayList<>());
 		return listOfSimplePojos;
 	}
 	
@@ -442,8 +442,8 @@ public class SimpleContainerObject implements Serializable{
 			})
 	//@PersistentEntity(primaryKey = "setOfSimplePojos")
 	public synchronized PersistentSet<SimplePojo> getSetOfSimplePojos() throws Exception{
-		if(setOfSimplePojos==null)
-			setOfSimplePojos = PersistenceReferenceFactory.getSetReference(this, new HashSet<>());
+		//if(setOfSimplePojos==null)
+			//setOfSimplePojos = PersistenceReferenceFactory.getSetReference(this, new HashSet<>());
 		return setOfSimplePojos;
 	}
 	
@@ -458,8 +458,8 @@ public class SimpleContainerObject implements Serializable{
 			})
 	//@PersistentEntity(primaryKey = "mapOfSimplePojos")
 	public synchronized PersistentMap<Integer, SimplePojo> getMapOfSimplePojos() throws Exception{
-		if(mapOfSimplePojos==null)
-			mapOfSimplePojos = PersistenceReferenceFactory.getMapReference(this, new HashMap<>());
+		//if(mapOfSimplePojos==null)
+			//mapOfSimplePojos = PersistenceReferenceFactory.getMapReference(this, new HashMap<>());
 		return mapOfSimplePojos;
 	}
 	

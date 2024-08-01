@@ -6,9 +6,11 @@ public class PersistentSetImpl<E> extends PersistentCollectionAbstractImpl<E, Se
 
 		
 	public PersistentSetImpl(
-			PersistentObjectReference<Set<PersistentObjectReference<E>>> wrappedReference, 
-			Set<PersistentObjectReference<E>> initialInstanceImplementation) {
-		super(wrappedReference, initialInstanceImplementation);
+			PersistentObjectReference<Set<PersistentObjectReference<E>>> wrappedReference//, 
+			//>>>>>>>Set<PersistentObjectReference<E>> initialInstanceImplementation
+			) {
+		//>>>>>>>super(wrappedReference, initialInstanceImplementation);
+		super(wrappedReference);
 	}
 		
 

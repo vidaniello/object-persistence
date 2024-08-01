@@ -10,7 +10,7 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 	
 	
 	private PersistentObjectReference<T> wrappedReference;
-	private T initialInstanceImplementation;
+	//>>>>private T initialInstanceImplementation;
 	
 	private Boolean hashCodeImplemented;
 	
@@ -19,24 +19,26 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 	}
 	
 	public PersistentIterableImpl(
-			PersistentObjectReference<T> wrappedReference, 
-			T initialInstanceImplementation
+			PersistentObjectReference<T> wrappedReference//, 
+			//>>>>T initialInstanceImplementation
 		) {
 		Objects.requireNonNull(wrappedReference);
-		Objects.requireNonNull(initialInstanceImplementation);
+		//>>>>>>Objects.requireNonNull(initialInstanceImplementation);
 		this.wrappedReference = wrappedReference;
-		this.initialInstanceImplementation = initialInstanceImplementation;
+		//>>>>this.initialInstanceImplementation = initialInstanceImplementation;
 	}
 	
 	
 	@Override
 	public synchronized T getCollection() throws Exception {
-		T toret = getWrappedReference().getValue();
-		if(toret==null) {
-			toret = getInitialInstanceImplementation();
-			getWrappedReference().setValue(toret);
-		}
-		return toret;
+//		T toret = getWrappedReference().getValue();
+//		if(toret==null) {
+//			toret = getInitialInstanceImplementation();
+//			getWrappedReference().setValue(toret);
+//		}
+//		return toret;
+		
+		return getWrappedReference().getValue();
 	}
 	
 	
@@ -47,10 +49,11 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 		return wrappedReference;
 	}
 	
+	/*
 	T getInitialInstanceImplementation() {
 		return initialInstanceImplementation;
 	}
-	
+	*/
 	
 	boolean isHashCodeImplemented() throws Exception {
 		if(hashCodeImplemented==null)

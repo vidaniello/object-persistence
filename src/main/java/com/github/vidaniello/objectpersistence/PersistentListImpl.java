@@ -9,9 +9,11 @@ public class PersistentListImpl<E> extends PersistentCollectionAbstractImpl<E, L
 
 		
 	public PersistentListImpl(
-			PersistentObjectReference<List<PersistentObjectReference<E>>> wrappedReference, 
-			List<PersistentObjectReference<E>> initialInstanceImplementation) {
-		super(wrappedReference, initialInstanceImplementation);
+			PersistentObjectReference<List<PersistentObjectReference<E>>> wrappedReference//, 
+			//>>>>>List<PersistentObjectReference<E>> initialInstanceImplementation
+			) {
+		//>>>>>super(wrappedReference, initialInstanceImplementation);
+		super(wrappedReference);
 	}
 		
 	@Override

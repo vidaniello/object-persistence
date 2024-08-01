@@ -52,9 +52,9 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				initPersistentReference(efw, self, proceed, args); 
 			
 			if(thisMethod.equals(efw.getEntityFieldConfiguration().getGetterMethod()))
-				return loadField(efw, self, proceed.invoke(self, args));
+				return getField(efw, self, proceed.invoke(self, args));
 			else if(thisMethod.equals(efw.getEntityFieldConfiguration().getSetterMethod())) {
-				saveField(efw, self, args[0]);
+				setField(efw, self, args[0]);
 				return proceed.invoke(self, args);
 			}
 			return proceed.invoke(self, args);
@@ -71,11 +71,11 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		
 		if(Iterable.class.isAssignableFrom(entityClass) || Map.class.isAssignableFrom(entityClass)) {			
 			
-			Object fromMethod = proceed.invoke(self, args);
+			//Object fromMethod = proceed.invoke(self, args);
 			
 			if(List.class.isAssignableFrom(entityClass)) {
 				//List
-				pr = PersistenceReferenceFactory.getListReference(efw.getEntityFieldConfiguration().getField(), self, fromMethod);
+				pr = PersistenceReferenceFactory.getListReference(efw.getEntityFieldConfiguration().getField(), self/*, fromMethod*/);
 			} else if(Set.class.isAssignableFrom(entityClass)) {
 				//Set
 				
@@ -99,8 +99,8 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	private Object loadField(EntityFieldWrapper efw, Object self, Object fromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
+	//@SuppressWarnings("unchecked")
+	private Object getField(EntityFieldWrapper efw, Object self, Object fromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
 		Object toret = fromMethod;
 		
@@ -118,20 +118,30 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			
 			if(PersistentCollectionIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
+				/*
 				Collection<?> fromMeth = new ArrayList<>();
 				
 				if(fromMethod!=null)
 					if(Collection.class.isAssignableFrom(fromMethod.getClass()))
 						fromMeth = (Collection<?>) fromMethod;
+				*/		
 						
 				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
 				@SuppressWarnings("rawtypes")
 				Collection wrappedCollection = pci.getCollection();
 				
+				/*
 				if(wrappedCollection.isEmpty() && !fromMeth.isEmpty())
 					fromMeth.forEach(wrappedCollection::add);
-									
+				*/
+				
+				/*
 				if(!wrappedCollection.isEmpty()) {
+					efw.getEntityFieldConfiguration().getField().set(self, wrappedCollection);
+					toret = wrappedCollection;
+				}
+				*/
+				if(wrappedCollection!=null) {
 					efw.getEntityFieldConfiguration().getField().set(self, wrappedCollection);
 					toret = wrappedCollection;
 				}
@@ -145,7 +155,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void saveField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
 		Object objFromField = efw.getEntityFieldConfiguration().getField().get(self);
 		
@@ -161,11 +171,13 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			
 			if(PersistentCollectionIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
+				/*
 				Collection<?> fromMeth = new ArrayList<>();
 				
 				if(arg!=null)
 					if(Collection.class.isAssignableFrom(arg.getClass()))
 						fromMeth = (Collection<?>) arg;
+				*/
 				
 				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
 				@SuppressWarnings("rawtypes")
@@ -173,7 +185,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				
 				wrappedCollection.clear();
 							
-				fromMeth.forEach(wrappedCollection::add);
+//fromMeth.forEach(wrappedCollection::add);
 				
 			} else if(PersistentMapIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				

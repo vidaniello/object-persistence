@@ -13,9 +13,11 @@ public abstract class PersistentCollectionAbstractImpl<E, T extends Collection<P
 	}
 	
 	public PersistentCollectionAbstractImpl(
-			PersistentObjectReference<T> wrappedReference, 
-			T initialInstanceImplementation) {
-		super(wrappedReference, initialInstanceImplementation);
+			PersistentObjectReference<T> wrappedReference//, 
+			//>>>>>>>T initialInstanceImplementation
+			) {
+		//>>>>>>super(wrappedReference, initialInstanceImplementation);
+		super(wrappedReference);
 	}
 	
 	
