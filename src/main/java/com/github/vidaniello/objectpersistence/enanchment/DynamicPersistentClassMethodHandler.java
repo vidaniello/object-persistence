@@ -183,9 +183,9 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				@SuppressWarnings("rawtypes")
 				Collection wrappedCollection = pci.getCollection();
 				
-				wrappedCollection.clear();
+				//wrappedCollection.clear();
 							
-//fromMeth.forEach(wrappedCollection::add);
+				//fromMeth.forEach(wrappedCollection::add);
 				
 			} else if(PersistentMapIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				

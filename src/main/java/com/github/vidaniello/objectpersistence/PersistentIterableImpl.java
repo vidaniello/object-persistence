@@ -37,11 +37,13 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 //			getWrappedReference().setValue(toret);
 //		}
 //		return toret;
-		
 		return getWrappedReference().getValue();
 	}
 	
-	
+	@Override
+	public void setCollection(T collection) throws Exception {
+		getWrappedReference().setValue(collection);
+	}
 	
 	
 	

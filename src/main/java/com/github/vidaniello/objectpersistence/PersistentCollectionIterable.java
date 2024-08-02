@@ -11,4 +11,11 @@ public interface PersistentCollectionIterable<E, T extends Collection<Persistent
 	 */
 	public T getCollection() throws Exception;
 	
+	/**
+	 * Persist the collection
+	 * @return
+	 * @throws Exception
+	 */
+	public void setCollection(T collection) throws Exception;
+	
 }
