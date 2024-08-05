@@ -18,4 +18,11 @@ public interface PersistentCollectionIterable<E, T extends Collection<Persistent
 	 */
 	public void setCollection(T collection) throws Exception;
 	
+	/**
+	 * Persist the collection
+	 * @return
+	 * @throws Exception
+	 */
+	public void setCollectionNewInstance(Class<? extends Collection<?>> collectionClass) throws Exception;
+	
 }

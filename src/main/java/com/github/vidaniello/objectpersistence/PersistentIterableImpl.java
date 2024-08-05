@@ -45,7 +45,11 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 		getWrappedReference().setValue(collection);
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setCollectionNewInstance(Class<? extends Collection<?>> collectionClass) throws Exception {
+		getWrappedReference().setValue((T) collectionClass.newInstance());
+	}
 	
 	public PersistentObjectReference<T> getWrappedReference() {
 		return wrappedReference;

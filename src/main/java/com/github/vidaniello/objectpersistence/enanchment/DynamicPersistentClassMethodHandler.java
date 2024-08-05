@@ -54,8 +54,8 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			if(thisMethod.equals(efw.getEntityFieldConfiguration().getGetterMethod()))
 				return getField(efw, self, proceed.invoke(self, args));
 			else if(thisMethod.equals(efw.getEntityFieldConfiguration().getSetterMethod())) {
-				setField(efw, self, args[0]);
-				return proceed.invoke(self, args);
+				Object _arg = setField(efw, self, args[0]);
+				return proceed.invoke(self, _arg);
 			}
 			return proceed.invoke(self, args);
 			//return fromMethod;
@@ -99,10 +99,10 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	}
 	
 	
-	//@SuppressWarnings("unchecked")
-	private Object getField(EntityFieldWrapper efw, Object self, Object fromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
+	@SuppressWarnings("unchecked")
+	private Object getField(EntityFieldWrapper efw, Object self, Object invokeFromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
-		Object toret = fromMethod;
+		Object toret = invokeFromMethod;
 		
 		if(PersistentObjectReference.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 			
@@ -128,7 +128,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 						
 				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
 				@SuppressWarnings("rawtypes")
-				Collection wrappedCollection = pci.getCollection();
+				Collection wrappedCollection = (Collection) pci.getCollection();
 				
 				/*
 				if(wrappedCollection.isEmpty() && !fromMeth.isEmpty())
@@ -144,7 +144,21 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				if(wrappedCollection!=null) {
 					efw.getEntityFieldConfiguration().getField().set(self, wrappedCollection);
 					toret = wrappedCollection;
+				} else if(invokeFromMethod!=null) {
+					
+					if(Collection.class.isAssignableFrom(invokeFromMethod.getClass())) {
+					
+						Collection<?> coll = (Collection<?>) invokeFromMethod;
+						pci.setCollectionNewInstance((Class<? extends Collection<?>>) coll.getClass());
+						@SuppressWarnings("rawtypes")
+						Collection _wrappedCollection = pci.getCollection();
+						coll.forEach(_wrappedCollection::add);
+						efw.getEntityFieldConfiguration().getField().set(self, _wrappedCollection);
+						toret = _wrappedCollection;
+					}
+						
 				}
+				
 				
 			} else if(PersistentMapIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
@@ -155,17 +169,19 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private Object setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
 		Object objFromField = efw.getEntityFieldConfiguration().getField().get(self);
 		
+		//Check same instance
 		if(objFromField==arg)
-			return;
+			return arg;
 		
 		if(PersistentObjectReference.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 			
 			PersistentObjectReference<Object> por = (PersistentObjectReference<Object>) efw.getPersistentReference();
 			por.setValue(arg);
+			return arg;
 			
 		} else {
 			
@@ -183,7 +199,22 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				@SuppressWarnings("rawtypes")
 				Collection wrappedCollection = pci.getCollection();
 				
-				//wrappedCollection.clear();
+				if(wrappedCollection!=null)
+					wrappedCollection.clear();
+				
+				if(arg!=null) {
+					
+					if(Collection.class.isAssignableFrom(arg.getClass())) {
+						Collection<?> coll = (Collection<?>) arg;
+						pci.setCollectionNewInstance((Class<? extends Collection<?>>) coll.getClass());
+						@SuppressWarnings("rawtypes")
+						Collection _wrappedCollection = pci.getCollection();
+						coll.forEach(_wrappedCollection::add);
+						return _wrappedCollection;
+					}
+					
+				} else
+					pci.setCollection(null);
 							
 				//fromMeth.forEach(wrappedCollection::add);
 				
@@ -192,6 +223,8 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			}
 				
 		}
+		
+		return arg;
 	}
 
 }

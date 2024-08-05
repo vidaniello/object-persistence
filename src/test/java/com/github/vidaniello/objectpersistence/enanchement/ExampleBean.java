@@ -1,6 +1,7 @@
 package com.github.vidaniello.objectpersistence.enanchement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -137,6 +138,8 @@ public class ExampleBean implements Serializable {
 	}
 
 	public List<ObjectToPersist> getListObjectToPersist() {
+		if(listObjectToPersist==null)
+			listObjectToPersist = new ArrayList<>();
 		return listObjectToPersist;
 	}
 
