@@ -194,6 +194,7 @@ public class TestEnanchment {
 			//GenericContainer<List<ObjectToPersist>> gc = eb1.getListObjectToPersistWrapped();
 			
 			eb1.getListObjectToPersist().add(newOtp);
+			int count = eb1.getListObjectToPersist().size();
 			
 			/*
 			new Thread(()->{

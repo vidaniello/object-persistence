@@ -52,7 +52,7 @@ public class ExampleBean implements Serializable {
 			repoName = "ExampleBean.${getId()}.listObjectToPersist",
 			repositoryClassImplementation = DiskPersistManagerDefault.class,
 			properties = {
-					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/")
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/listObjectToPersist/")
 			})
 	private transient List<ObjectToPersist> listObjectToPersist;
 	

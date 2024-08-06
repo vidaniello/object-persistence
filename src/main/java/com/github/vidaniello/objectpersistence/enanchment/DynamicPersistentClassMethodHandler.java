@@ -86,7 +86,9 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				//Map
 				
 			} else
-				throw new Exception("Iterable or Map interface of '"+entityClass.getCanonicalName()+"' is not managed");
+				throw new Exception("Iterable or Map interface of type '"+entityClass.getCanonicalName()+"' is not managed");
+			
+			
 			
 			
 		} else {
@@ -98,6 +100,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		efw.setPersistentReference(pr);
 	}
 	
+	private boolean collectionInitialized;
 	
 	@SuppressWarnings("unchecked")
 	private Object getField(EntityFieldWrapper efw, Object self, Object invokeFromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
@@ -115,6 +118,20 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			}
 		
 		} else {
+			
+			Object fromField = efw.getEntityFieldConfiguration().getField().get(self);
+			
+			if(efw.getPersistentReference()!=fromField) {
+				
+				//First inizialization
+				
+			} else 
+				return invokeFromMethod;
+			
+			if(collectionInitialized)
+				return invokeFromMethod;
+			
+			collectionInitialized = true;
 			
 			if(PersistentCollectionIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
@@ -142,21 +159,27 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 				}
 				*/
 				if(wrappedCollection!=null) {
-					efw.getEntityFieldConfiguration().getField().set(self, wrappedCollection);
-					toret = wrappedCollection;
+					efw.getEntityFieldConfiguration().getField().set(self, pci);
+					toret = pci;
 				} else if(invokeFromMethod!=null) {
 					
 					if(Collection.class.isAssignableFrom(invokeFromMethod.getClass())) {
 					
 						Collection<?> coll = (Collection<?>) invokeFromMethod;
 						pci.setCollectionNewInstance((Class<? extends Collection<?>>) coll.getClass());
+						
+						//Collection _wrappedCollection = pci.getCollection();
 						@SuppressWarnings("rawtypes")
-						Collection _wrappedCollection = pci.getCollection();
-						coll.forEach(_wrappedCollection::add);
-						efw.getEntityFieldConfiguration().getField().set(self, _wrappedCollection);
-						toret = _wrappedCollection;
+						Collection persistColl = (Collection) pci;
+						
+						coll.forEach(persistColl::add);
+						efw.getEntityFieldConfiguration().getField().set(self, pci);
+						toret = pci;
 					}
 						
+				} else {
+					efw.getEntityFieldConfiguration().getField().set(self, null);
+					toret = null;
 				}
 				
 				
@@ -213,8 +236,10 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 						return _wrappedCollection;
 					}
 					
-				} else
+				} else {
 					pci.setCollection(null);
+					collectionInitialized = false;
+				}
 							
 				//fromMeth.forEach(wrappedCollection::add);
 				
