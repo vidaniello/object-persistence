@@ -38,8 +38,9 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	@Override
 	public Object invoke(Object self, Method thisMethod, Method proceed, Object[] args) throws Throwable {
 		
-		synchronized (references.get(thisMethod)) {
-			EntityFieldWrapper efw = references.get(thisMethod);
+		EntityFieldWrapper efw = references.get(thisMethod);
+		
+		synchronized (efw) {
 			
 			//Method getter = efw.getEntityFieldConfiguration().getGetterMethod();
 			//Method setter = efw.getEntityFieldConfiguration().getSetterMethod();
@@ -88,8 +89,8 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			} else
 				throw new Exception("Iterable or Map interface of type '"+entityClass.getCanonicalName()+"' is not managed");
 			
-			
-			
+			//Put in the field the reference
+			efw.getEntityFieldConfiguration().getField().set(self, pr);
 			
 		} else {
 			
@@ -100,7 +101,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		efw.setPersistentReference(pr);
 	}
 	
-	private boolean collectionInitialized;
+	private boolean routineGet;
 	
 	@SuppressWarnings("unchecked")
 	private Object getField(EntityFieldWrapper efw, Object self, Object invokeFromMethod) throws IllegalArgumentException, IllegalAccessException, Exception {
@@ -120,6 +121,25 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		} else {
 			
 			Object fromField = efw.getEntityFieldConfiguration().getField().get(self);
+			toret = fromField;
+			
+			if(!routineGet){
+				
+				routineGet = true;
+				
+				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
+				@SuppressWarnings("rawtypes")
+				Collection wrappedCollection = (Collection) pci.getCollection();
+				
+				if(wrappedCollection==null){
+					
+				}
+				
+			}
+			
+			
+			
+			
 			
 			if(efw.getPersistentReference()!=fromField) {
 				
@@ -188,6 +208,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			}
 			
 		}
+		
 		return toret;
 	}
 
@@ -195,11 +216,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 	private Object setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
 		Object objFromField = efw.getEntityFieldConfiguration().getField().get(self);
-		
-		//Check same instance
-		if(objFromField==arg)
-			return arg;
-		
+				
 		if(PersistentObjectReference.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 			
 			PersistentObjectReference<Object> por = (PersistentObjectReference<Object>) efw.getPersistentReference();
@@ -207,6 +224,10 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			return arg;
 			
 		} else {
+			
+			//Check same instance
+			if(objFromField==arg)
+				return arg;
 			
 			if(PersistentCollectionIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
