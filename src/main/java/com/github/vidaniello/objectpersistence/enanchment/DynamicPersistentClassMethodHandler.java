@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.github.vidaniello.objectpersistence.PersistenceIterable;
 import com.github.vidaniello.objectpersistence.PersistenceReferenceFactory;
 import com.github.vidaniello.objectpersistence.PersistentCollectionIterable;
 import com.github.vidaniello.objectpersistence.PersistentMapIterable;
@@ -120,64 +121,38 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		
 		} else {
 			
-			Object fromField = efw.getEntityFieldConfiguration().getField().get(self);
-			toret = fromField;
+			toret = efw.getEntityFieldConfiguration().getField().get(self);
 			
 			if(!routineGet){
 				
 				routineGet = true;
 				
-				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
-				@SuppressWarnings("rawtypes")
-				Collection wrappedCollection = (Collection) pci.getCollection();
+				//PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
+				//@SuppressWarnings("rawtypes")
+				//Collection wrappedCollection = (Collection) pci.getCollection();
+				PersistenceIterable pi = (PersistenceIterable) efw.getPersistentReference();
+				Object wrappedCollection = pi.getWrappedIterable();
 				
 				if(wrappedCollection==null){
+					
+					if(invokeFromMethod!=null) {
+						newIterableInstanceAndCollectionLoading(pi, invokeFromMethod);
+					} else {
+						//defaultinstance
+					}
 					
 				}
 				
 			}
 			
-			
-			
-			
-			
-			if(efw.getPersistentReference()!=fromField) {
-				
-				//First inizialization
-				
-			} else 
-				return invokeFromMethod;
-			
-			if(collectionInitialized)
-				return invokeFromMethod;
-			
-			collectionInitialized = true;
-			
+			/*
 			if(PersistentCollectionIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
-				
-				/*
-				Collection<?> fromMeth = new ArrayList<>();
-				
-				if(fromMethod!=null)
-					if(Collection.class.isAssignableFrom(fromMethod.getClass()))
-						fromMeth = (Collection<?>) fromMethod;
-				*/		
+		
 						
 				PersistentCollectionIterable<?,?> pci =  (PersistentCollectionIterable<?,?>) efw.getPersistentReference();
 				@SuppressWarnings("rawtypes")
 				Collection wrappedCollection = (Collection) pci.getCollection();
 				
-				/*
-				if(wrappedCollection.isEmpty() && !fromMeth.isEmpty())
-					fromMeth.forEach(wrappedCollection::add);
-				*/
-				
-				/*
-				if(!wrappedCollection.isEmpty()) {
-					efw.getEntityFieldConfiguration().getField().set(self, wrappedCollection);
-					toret = wrappedCollection;
-				}
-				*/
 				if(wrappedCollection!=null) {
 					efw.getEntityFieldConfiguration().getField().set(self, pci);
 					toret = pci;
@@ -206,12 +181,32 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			} else if(PersistentMapIterable.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
 				
 			}
-			
+			*/
 		}
 		
 		return toret;
 	}
 
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void newIterableInstanceAndCollectionLoading(PersistenceIterable pi, Object iterable) throws Exception {
+		if(PersistentCollectionIterable.class.isAssignableFrom(pi.getClass())) {
+			//Collection
+			
+			PersistentCollectionIterable pci = (PersistentCollectionIterable) pi;
+			pci.setCollectionNewInstance(pi.getClass());
+			
+		} else if(PersistentMapIterable.class.isAssignableFrom(pi.getClass())) {
+			//Map
+			
+			PersistentMapIterable pmi = (PersistentMapIterable) pi;
+			pmi.setMapNewInstance(pi.getClass());
+			
+			
+		} else
+			throw new Exception("Iterable or Map interface of type '"+pi.getClass().getCanonicalName()+"' is not managed");
+	}
+	
 	@SuppressWarnings("unchecked")
 	private Object setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
 		
@@ -250,7 +245,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 					
 					if(Collection.class.isAssignableFrom(arg.getClass())) {
 						Collection<?> coll = (Collection<?>) arg;
-						pci.setCollectionNewInstance((Class<? extends Collection<?>>) coll.getClass());
+						pci.setCollectionNewInstance((Class<Collection<?>>) coll.getClass());
 						@SuppressWarnings("rawtypes")
 						Collection _wrappedCollection = pci.getCollection();
 						coll.forEach(_wrappedCollection::add);
@@ -259,7 +254,7 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 					
 				} else {
 					pci.setCollection(null);
-					collectionInitialized = false;
+					
 				}
 							
 				//fromMeth.forEach(wrappedCollection::add);

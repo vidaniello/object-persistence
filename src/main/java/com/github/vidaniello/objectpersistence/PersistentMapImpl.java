@@ -14,7 +14,7 @@ import javax.management.RuntimeErrorException;
 public class PersistentMapImpl<KEY,VALUE> implements PersistentMap<KEY,VALUE>, Function<PersistentObjectReference<VALUE>, VALUE> {
 
 	private PersistentObjectReference<Map<KEY,PersistentObjectReference<VALUE>>> wrappedReference;
-	private Map<KEY,PersistentObjectReference<VALUE>> initialInstanceImplementation;
+	//<<<<<<<<private Map<KEY,PersistentObjectReference<VALUE>> initialInstanceImplementation;
 	
 	private Boolean hashCodeImplemented;
 	
@@ -23,24 +23,42 @@ public class PersistentMapImpl<KEY,VALUE> implements PersistentMap<KEY,VALUE>, F
 	}
 	
 	public PersistentMapImpl(
-			PersistentObjectReference<Map<KEY,PersistentObjectReference<VALUE>>> wrappedReference, 
-			Map<KEY,PersistentObjectReference<VALUE>> initialInstanceImplementation) {
+			PersistentObjectReference<Map<KEY,PersistentObjectReference<VALUE>>> wrappedReference//, 
+			//<<<<<<<<Map<KEY,PersistentObjectReference<VALUE>> initialInstanceImplementation
+			) {
 		Objects.requireNonNull(wrappedReference);
-		Objects.requireNonNull(initialInstanceImplementation);
+		//<<<<<<<<Objects.requireNonNull(initialInstanceImplementation);
 		this.wrappedReference = wrappedReference;
-		this.initialInstanceImplementation = initialInstanceImplementation;
+		//<<<<<<this.initialInstanceImplementation = initialInstanceImplementation;
 	}
 
-	
+	@Override
+	public Object getWrappedIterable() throws Exception {
+		return getWrappedReference().getValue();
+	}
 	
 	@Override
 	public synchronized Map<KEY,PersistentObjectReference<VALUE>> getMap() throws Exception {
-		Map<KEY,PersistentObjectReference<VALUE>> toret = getWrappedReference().getValue();
+		//Map<KEY,PersistentObjectReference<VALUE>> toret = getWrappedReference().getValue();
+		/*<<<<<<<<
 		if(toret==null) {
 			toret = getInitialInstanceImplementation();
 			getWrappedReference().setValue(toret);
 		}
-		return toret;
+		*/
+		//return toret;
+		return getWrappedReference().getValue();
+	}
+	
+	@Override
+	public void setMap(Map<KEY, PersistentObjectReference<VALUE>> map) throws Exception {
+		getWrappedReference().setValue(map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setMapNewInstance(Class<Map<KEY, ?>> mapConcreteClass) throws Exception {
+		getWrappedReference().setValue((Map<KEY, PersistentObjectReference<VALUE>>) mapConcreteClass.newInstance());
 	}
 
 	@Override
@@ -58,10 +76,11 @@ public class PersistentMapImpl<KEY,VALUE> implements PersistentMap<KEY,VALUE>, F
 		return wrappedReference;
 	}
 	
+	/*<<<<<<<<<<<<<<<<<<<<<
 	Map<KEY, PersistentObjectReference<VALUE>> getInitialInstanceImplementation() {
 		return initialInstanceImplementation;
 	}
-	
+	*/
 	
 	boolean isHashCodeImplemented() throws Exception {
 		if(hashCodeImplemented==null)

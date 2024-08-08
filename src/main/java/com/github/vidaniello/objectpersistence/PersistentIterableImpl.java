@@ -28,6 +28,10 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 		//>>>>this.initialInstanceImplementation = initialInstanceImplementation;
 	}
 	
+	@Override
+	public Object getWrappedIterable() throws Exception {
+		return getWrappedReference().getValue();
+	}
 	
 	@Override
 	public synchronized T getCollection() throws Exception {
@@ -47,7 +51,7 @@ public abstract class PersistentIterableImpl<E, T extends Collection<PersistentO
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setCollectionNewInstance(Class<? extends Collection<?>> collectionClass) throws Exception {
+	public void setCollectionNewInstance(Class<Collection<?>> collectionClass) throws Exception {
 		getWrappedReference().setValue((T) collectionClass.newInstance());
 	}
 	
