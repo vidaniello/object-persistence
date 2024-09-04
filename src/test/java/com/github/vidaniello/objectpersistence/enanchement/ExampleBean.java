@@ -59,10 +59,20 @@ public class ExampleBean implements Serializable {
 	@PersistentRepositoryConfig
 	private transient ObjectToPersist objectToPersist2;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.setObjectToPersist",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/setObjectToPersist/")
+			})
 	private transient Set<ObjectToPersist> setObjectToPersist;
 	
-	@PersistentRepositoryConfig
+	@PersistentRepositoryConfig(
+			repoName = "ExampleBean.${getId()}.mapObjectToPersist",
+			repositoryClassImplementation = DiskPersistManagerDefault.class,
+			properties = {
+					@Property(key = DiskPersistManagerDefault.propertyName_repositoryPath, value = "ExampleBean/${getId()}/mapObjectToPersist/")
+			})
 	private transient Map<Integer,ObjectToPersist> mapObjectToPersist;
 	
 	public ExampleBean() {

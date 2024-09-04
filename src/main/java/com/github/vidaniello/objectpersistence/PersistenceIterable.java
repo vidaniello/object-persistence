@@ -6,4 +6,8 @@ public interface PersistenceIterable extends PersistentReference {
 	
 	public Object getWrappedIterable() throws Exception;
 	
+	public void setNullWrappedReference() throws Exception;
+	
+	public void clearIterable() throws Exception;
+	
 }

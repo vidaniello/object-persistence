@@ -29,7 +29,9 @@ import com.github.vidaniello.objectpersistence.PersistentMap;
 import com.github.vidaniello.objectpersistence.PersistentObjectReference;
 import com.github.vidaniello.objectpersistence.PersistentSet;
 
+@Deprecated
 public class TestPersistence {
+	/*
 	static {
 		// Log4j from 2.17.>
 		//System.setProperty("log4j2.Configuration.allowedProtocols", "http");
@@ -48,7 +50,8 @@ public class TestPersistence {
 				DiskPersistManagerDefault.defaultBasePath+File.separator+"test"
 			);
 	}
-	
+	*/
+	/*
 	private Logger log = LogManager.getLogger();
 	
 	private SimplePojo getSimplePojoMock() {
@@ -63,7 +66,9 @@ public class TestPersistence {
 		
 		return sp2;
 	}
+	*/
 	
+	/*
 	@Test
 	public void test3() {
 		try {			
@@ -71,7 +76,7 @@ public class TestPersistence {
 			sco.setId("alfa");
 			
 			SimplePojo sp = null;
-			
+			*/
 			/*
 			sp = sco.getDynamicId();
 			
@@ -81,7 +86,7 @@ public class TestPersistence {
 			
 			sp = sco.getDynamicId();
 			*/
-			
+			/*
 			sp = sco.getSimplePojo();
 			
 			sco.setSimplePojo(getSimplePojoMock());
@@ -95,7 +100,9 @@ public class TestPersistence {
 			throw new AssertionError(e);
 		}
 	}
+	*/
 	
+	/*
 	@Test
 	public void testDynamicPattern() {
 		try {			
@@ -112,13 +119,16 @@ public class TestPersistence {
 			throw new AssertionError(e);
 		}
 	}
+	*/
 	
+	/*
 	@Test
 	public void test2() {
 		try {
 			
 			SimpleContainerObject sco = new SimpleContainerObject();
 			sco.setId("1");
+			*/
 			/*
 			SimplePojo sp = sco.getSimplePojo();
 			
@@ -134,7 +144,7 @@ public class TestPersistence {
 			*/
 			
 			
-			
+			/*
 			if(sco.getListOfStrings()==null) {
 				LinkedList<String> listOfStr = new LinkedList<>();
 				listOfStr.add("c");
@@ -271,8 +281,8 @@ public class TestPersistence {
 
 			
 			
-			PersistManager</*String,*/ SimpleContainerObject> pm = PersistRepositoyPool.getInstance().getRepository(SimpleContainerObject.class.getCanonicalName());
-						
+			//PersistManager</*String,*/ SimpleContainerObject> pm = PersistRepositoyPool.getInstance().getRepository(SimpleContainerObject.class.getCanonicalName());
+			/*		
 			SimpleContainerObject sco = pm.read("1");
 			if(sco==null) {
 				sco = new SimpleContainerObject();
@@ -356,7 +366,7 @@ public class TestPersistence {
 		}
 	}
 	*/
-	
+	/*
 	@Test
 	public void testNewCollection() {
 		try {
@@ -717,10 +727,12 @@ public class TestPersistence {
 			*/
 			
 			//SimplePojo ret = map.remove(45);
+	/*
 			map.clear();
 						
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
 	}
+	*/
 }

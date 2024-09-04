@@ -196,7 +196,7 @@ public class TestEnanchment {
 			
 			eb1.getListObjectToPersist().add(newOtp);
 			int count = eb1.getListObjectToPersist().size();
-			new HashMap<>();
+			
 			/*
 			new Thread(()->{
 				eb1.getListObjectToPersistWrapped();

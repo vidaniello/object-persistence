@@ -20,6 +20,10 @@ public abstract class PersistentCollectionAbstractImpl<E, T extends Collection<P
 		super(wrappedReference);
 	}
 	
+	@Override
+	public void clearIterable() throws Exception {
+		clear();
+	}
 	
 	@Override
 	public synchronized int size() {

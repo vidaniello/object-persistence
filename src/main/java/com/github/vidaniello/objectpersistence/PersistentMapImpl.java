@@ -62,6 +62,16 @@ public class PersistentMapImpl<KEY,VALUE> implements PersistentMap<KEY,VALUE>, F
 	}
 
 	@Override
+	public void clearIterable() throws Exception{
+		clear();
+	}
+	
+	@Override
+	public void setNullWrappedReference() throws Exception{
+		getWrappedReference().setValue(null);
+	}
+	
+	@Override
 	public PersistentObjectReferenceInfo getOriginalPersistentObjectReferenceInfo() {
 		return getWrappedReference().getPersistentObjectReferenceInfo();
 	}

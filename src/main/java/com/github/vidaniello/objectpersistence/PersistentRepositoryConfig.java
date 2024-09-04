@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD,ElementType.FIELD })
+@Target({ElementType.FIELD })
 public @interface PersistentRepositoryConfig {
 	
 	/**
