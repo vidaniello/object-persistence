@@ -143,8 +143,42 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 		}
 		
 		return toret;
+	}	
+	
+	@SuppressWarnings("unchecked")
+	private Object setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
+		
+		if(PersistentObjectReference.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
+			
+			PersistentObjectReference<Object> por = (PersistentObjectReference<Object>) efw.getPersistentReference();
+			por.setValue(arg);
+			return arg;
+			
+		} else {
+			
+			Object objFromField = efw.getEntityFieldConfiguration().getField().get(self);
+			
+			//Check same instance
+			if(objFromField==arg)
+				return arg;
+			
+			PersistenceIterable pi = (PersistenceIterable) efw.getPersistentReference();
+						
+			if(pi.getWrappedIterable()!=null)
+				pi.clearIterable();
+			
+			if(arg==null) 				
+				routineGet = false;
+			else 				
+				newInstanceAndLoading(pi, arg);
+			
+			return pi;
+			
+		}
 	}
-
+	
+	
+	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void newInstanceAndLoading(PersistenceIterable pi, Object iterable) throws Exception {
@@ -177,48 +211,6 @@ public class DynamicPersistentClassMethodHandler<T> implements MethodHandler {
 			
 		} else
 			throw new Exception("Iterable or Map interface of type '"+pi.getClass().getCanonicalName()+"' is not managed");
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	private Object setField(EntityFieldWrapper efw, Object self, Object arg) throws IllegalArgumentException, IllegalAccessException, Exception {
-		
-		
-				
-		if(PersistentObjectReference.class.isAssignableFrom(efw.getPersistentReference().getClass())) {
-			
-			PersistentObjectReference<Object> por = (PersistentObjectReference<Object>) efw.getPersistentReference();
-			por.setValue(arg);
-			return arg;
-			
-		} else {
-			
-			Object objFromField = efw.getEntityFieldConfiguration().getField().get(self);
-			
-			//Check same instance
-			if(objFromField==arg)
-				return arg;
-			
-			PersistenceIterable pi = (PersistenceIterable) efw.getPersistentReference();
-			
-			if(arg==null) {
-				
-				if(pi.getWrappedIterable()!=null)
-					pi.clearIterable();
-				
-				routineGet = false;
-				
-			} else {
-				
-				if(pi.getWrappedIterable()!=null)
-					pi.clearIterable();
-				
-				newInstanceAndLoading(pi, arg);
-			}
-			
-			return pi;
-			
-		}
 	}
 	
 	
